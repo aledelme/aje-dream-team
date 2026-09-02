@@ -39,7 +39,7 @@ src/
     indicators/             Un fichero por indicador + index.ts (registro).
     zones/                  Un fichero por zona + index.ts (registro y validación).
   components/
-    ui/                     Badge, Chip y tonos semánticos.
+    ui/                     Badge, Chip, tonos semánticos y series de comparación.
     kpi/                    KpiCard, CompareCard, IndexBar, SourceDetails.
     profile/                Formulario en 4 pasos y ranking de resultados.
     analyzer/               Buscador, cabecera de zona y toggle de comparación.
@@ -85,6 +85,21 @@ Ficha, comparador, ranking de afinidad, pie de página y página de metodología
   lectura. El valor absoluto nunca se altera.
 - Cuando un dato se muestra sobre un ámbito más fino que el suyo se avisa con una etiqueta
   (*Dato municipal*, *Estación meteorológica más cercana*, *Nivel de parcela*).
+
+## Dos lenguajes de color, separados a propósito
+
+En la interfaz el color significa dos cosas distintas y nunca deben mezclarse:
+
+- **Semántico** (verde / ámbar / rojo): si un valor es bueno, regular o malo. Se usa en los badges
+  de riesgo y en el índice de la ficha de una sola zona.
+- **Identidad de serie** (azul `#1d4ed8` y violeta `#7e22ce`, en `--color-series-*`): de qué zona es
+  el dato cuando se comparan dos. Están **fuera de la paleta de marca** a propósito: usar el rojo
+  corporativo para la zona B chocaba con el rojo de riesgo alto y hacía ilegible el comparador.
+
+En el comparador las barras van siempre en el color de la serie; el juicio de bueno o malo lo dan el
+índice, la marca del 100 y los badges. Cada serie lleva además una **forma propia** —círculo y
+rombo— y el nombre de la zona siempre visible, para que el color no sea nunca el único indicio
+(daltonismo rojo-verde, impresión en gris).
 
 ## Consentimiento y datos de usuario
 

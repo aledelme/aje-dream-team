@@ -46,7 +46,7 @@ export default function KpiCard({ indicator, zone }: Props) {
         <p className="mt-2 text-sm text-ink-soft">
           {unavailable ?? 'La fuente no publica este dato para esta zona.'}
         </p>
-        <SourceDetails indicator={indicator} />
+        <SourceDetails indicator={indicator} context={zone.name} />
       </article>
     );
   }
@@ -75,6 +75,7 @@ export default function KpiCard({ indicator, zone }: Props) {
 
       <SourceDetails
         indicator={indicator}
+        context={zone.name}
         formula={
           isIndex(indicator) && typeof value.value === 'number'
             ? indexFormula(indicator, value.value)

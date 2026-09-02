@@ -47,6 +47,27 @@
   --color-ink-soft: #5c636a;
   --color-line: #e2e5e9;
 
+  /*
+   * --- Series de comparación (zona A / zona B) ---
+   *
+   * Deliberadamente FUERA de la paleta de marca. En el comparador conviven dos
+   * significados de color: «qué zona es» y «esto es bueno o malo». Si la zona B
+   * usa el rojo corporativo, choca con el rojo semántico de riesgo alto y la
+   * lectura se vuelve ambigua. Estos dos tonos no aparecen en ningún otro sitio
+   * de la interfaz, así que sólo pueden querer decir una cosa: identidad de zona.
+   *
+   * Azul y violeta son difíciles de separar en daltonismo rojo-verde, por eso
+   * cada serie lleva además una FORMA distinta (círculo y rombo) y su nombre
+   * siempre visible: el color nunca es el único indicio.
+   *
+   * Si cambias estos valores, cambia también SERIES_HEX en
+   * `src/components/ui/series.tsx`, que los necesita en crudo para el mapa.
+   */
+  --color-series-a: #1d4ed8;
+  --color-series-a-soft: #e7edfd;
+  --color-series-b: #7e22ce;
+  --color-series-b-soft: #f5e9fd;
+
   /* Semánticos para índices y badges de riesgo.
      Tonos ajustados para que el texto sobre su propio fondo suave llegue a AA. */
   --color-good: #197c4a;
@@ -201,6 +222,41 @@
   .field:hover,
   .field:focus-within {
     border-color: var(--color-brand);
+  }
+
+  /* --- Modal ligero (<dialog> nativo) --- */
+  .modal {
+    margin: auto;
+    padding: 0;
+    border: none;
+    background: transparent;
+    width: min(34rem, calc(100vw - 2rem));
+    max-height: min(85vh, 44rem);
+    overflow: visible;
+  }
+  .modal::backdrop {
+    background: rgb(33 37 41 / 0.5);
+  }
+  .modal-panel {
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
+    background: #fff;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-lift);
+    overflow: hidden;
+  }
+  /* Aparición discreta; se anula si el usuario pide menos movimiento. */
+  @media (prefers-reduced-motion: no-preference) {
+    .modal[open] .modal-panel {
+      animation: modal-in 0.16s ease-out;
+    }
+  }
+  @keyframes modal-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
   }
 
   /* --- Bandas de sección --- */

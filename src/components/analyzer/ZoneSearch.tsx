@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { SERIES, SeriesMarker, type SeriesId } from '~/components/ui/series';
 import { searchZones } from '~/lib/search/zone-search';
 import type { Zone } from '~/lib/indicators/types';
 
@@ -8,7 +9,8 @@ interface Props {
   onSelect: (zone: Zone | null) => void;
   label: string;
   placeholder?: string;
-  accent?: 'brand' | 'accent';
+  /** Serie de comparación, cuando el buscador identifica una zona comparada. */
+  series?: SeriesId;
 }
 
 /**
@@ -21,7 +23,7 @@ export default function ZoneSearch({
   onSelect,
   label,
   placeholder = 'Escribe una dirección, barrio o municipio…',
-  accent = 'brand',
+  series,
 }: Props) {
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
@@ -61,8 +63,7 @@ export default function ZoneSearch({
     }
   }
 
-  const ring = accent === 'brand' ? 'focus-within:border-brand' : 'focus-within:border-accent';
-  const dot = accent === 'brand' ? 'bg-brand' : 'bg-accent';
+  const ring = series ? SERIES[series].ring : 'focus-within:border-brand';
 
   if (selected) {
     return (
@@ -70,7 +71,7 @@ export default function ZoneSearch({
         <p className="mb-1.5 text-sm font-semibold">{label}</p>
         <div className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-white p-3.5">
           <span className="flex min-w-0 items-center gap-2">
-            <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${dot}`} aria-hidden="true" />
+            {series && <SeriesMarker series={series} />}
             <span className="min-w-0">
               <span className="block truncate font-semibold">{selected.name}</span>
               <span className="block truncate text-sm text-ink-soft">

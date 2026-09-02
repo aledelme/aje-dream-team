@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
+import { SERIES_HEX } from '~/components/ui/series';
 import type { Zone } from '~/lib/indicators/types';
 
 interface Props {
@@ -10,8 +11,8 @@ interface Props {
 }
 
 const COLORS = {
-  primary: '#0071e3',
-  secondary: '#e30613',
+  primary: SERIES_HEX.a,
+  secondary: SERIES_HEX.b,
   idle: '#8c949c',
 };
 

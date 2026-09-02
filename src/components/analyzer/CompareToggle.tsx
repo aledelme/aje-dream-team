@@ -1,4 +1,5 @@
 import type { CompareMode } from '~/components/kpi/CompareCard';
+import { SERIES, SeriesMarker, type SeriesId } from '~/components/ui/series';
 import type { Zone } from '~/lib/indicators/types';
 
 interface Props {
@@ -24,6 +25,20 @@ export default function CompareToggle({ mode, onChange, zones }: Props) {
 
   return (
     <div className="card p-3">
+      {/* Leyenda: deja explícito qué color y qué forma es cada zona, para que en
+          las tarjetas de abajo el color signifique sólo «de quién es el dato». */}
+      <div className="flex flex-wrap items-center gap-2 px-1 pb-3">
+        {(['a', 'b'] as SeriesId[]).map((id, i) => (
+          <span
+            key={id}
+            className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold ${SERIES[id].soft} ${SERIES[id].text}`}
+          >
+            <SeriesMarker series={id} />
+            {zones[i]!.name}
+          </span>
+        ))}
+      </div>
+
       <p className="px-1 pb-2 text-sm font-semibold">Modo de comparación</p>
       <div role="tablist" aria-label="Modo de comparación" className="grid gap-2 sm:grid-cols-2">
         {options.map((option) => {

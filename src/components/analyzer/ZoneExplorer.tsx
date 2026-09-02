@@ -73,6 +73,7 @@ export default function ZoneExplorer({ zones }: Props) {
               selected={primary}
               onSelect={(zone) => setPrimary(zone)}
               label="Zona a analizar"
+              series={comparing ? 'a' : undefined}
             />
             {comparing ? (
               <ZoneSearch
@@ -80,7 +81,7 @@ export default function ZoneExplorer({ zones }: Props) {
                 selected={secondary}
                 onSelect={(zone) => setSecondary(zone)}
                 label="Comparar con"
-                accent="accent"
+                series="b"
                 placeholder="Segunda zona…"
               />
             ) : (
@@ -136,8 +137,8 @@ export default function ZoneExplorer({ zones }: Props) {
         {primary && (
           <>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              <ZoneHeader zone={primary} accent="brand" />
-              {secondary && <ZoneHeader zone={secondary} accent="accent" />}
+              <ZoneHeader zone={primary} series={bothSelected ? 'a' : undefined} />
+              {secondary && <ZoneHeader zone={secondary} series="b" />}
             </div>
 
             {bothSelected && (
@@ -187,7 +188,8 @@ export default function ZoneExplorer({ zones }: Props) {
           height={340}
         />
         <p className="mt-2 text-xs text-ink-soft">
-          Pulsa un punto del mapa para seleccionarlo. Azul: zona analizada. Rojo: zona comparada.
+          Pulsa un punto del mapa para seleccionarlo. El punto azul es la zona analizada; el violeta,
+          la zona con la que se compara.
         </p>
       </div>
     </div>

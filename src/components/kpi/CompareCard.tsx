@@ -1,7 +1,7 @@
 import Badge from '~/components/ui/Badge';
 import Chip from '~/components/ui/Chip';
 import SourceDetails from './SourceDetails';
-import { TONE_CLASSES } from '~/components/ui/tone';
+import { SERIES, SeriesMarker, type SeriesId } from '~/components/ui/series';
 import {
   displayIndex,
   indexFormula,
@@ -12,7 +12,6 @@ import {
   percentile,
   relativeDifference,
   resolveRiskLevel,
-  toneForIndex,
 } from '~/lib/indicators/compute';
 import { num, signed } from '~/lib/format';
 import type { IndicatorDef, Zone } from '~/lib/indicators/types';
@@ -60,7 +59,7 @@ export default function CompareCard({ indicator, zones, mode }: Props) {
             other={i === 0 ? b : a}
             mode={mode}
             decimals={decimals}
-            accent={i === 0 ? 'brand' : 'accent'}
+            series={i === 0 ? 'a' : 'b'}
           />
         ))}
       </div>
@@ -80,15 +79,17 @@ export default function CompareCard({ indicator, zones, mode }: Props) {
 
       <SourceDetails
         indicator={indicator}
+        context={`${a.name} y ${b.name}`}
         formula={
-          isIndex(indicator) && typeof a.values[indicator.id]?.value === 'number'
-            ? `${a.name}: ${indexFormula(indicator, a.values[indicator.id]!.value as number)}`
+          isIndex(indicator)
+            ? zones
+                .filter((zone) => typeof zone.values[indicator.id]?.value === 'number')
+                .map(
+                  (zone) =>
+                    `${zone.name}: ${indexFormula(indicator, zone.values[indicator.id]!.value as number)}`,
+                )
+                .join('\n') || null
             : null
-        }
-        notes={
-          isIndex(indicator) && typeof b.values[indicator.id]?.value === 'number'
-            ? [`${b.name}: ${indexFormula(indicator, b.values[indicator.id]!.value as number)}`]
-            : []
         }
       />
     </article>
@@ -101,26 +102,28 @@ function Row({
   other,
   mode,
   decimals,
-  accent,
+  series,
 }: {
   indicator: IndicatorDef;
   zone: Zone;
   other: Zone;
   mode: CompareMode;
   decimals: number;
-  accent: 'brand' | 'accent';
+  series: SeriesId;
 }) {
   const value = zone.values[indicator.id]?.value;
   const otherValue = other.values[indicator.id]?.value;
-  const dotClass = accent === 'brand' ? 'bg-brand' : 'bg-accent';
+  const label = (
+    <span className="flex items-center gap-2 text-sm">
+      <SeriesMarker series={series} />
+      {zone.name}
+    </span>
+  );
 
   if (value === undefined) {
     return (
       <div className="flex items-center justify-between gap-3">
-        <span className="flex items-center gap-2 text-sm">
-          <span className={`h-2.5 w-2.5 rounded-full ${dotClass}`} aria-hidden="true" />
-          {zone.name}
-        </span>
+        {label}
         <Badge tone="neutral" size="sm">
           No disponible
         </Badge>
@@ -132,10 +135,7 @@ function Row({
     const level = resolveRiskLevel(indicator, value);
     return (
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="flex items-center gap-2 text-sm">
-          <span className={`h-2.5 w-2.5 rounded-full ${dotClass}`} aria-hidden="true" />
-          {zone.name}
-        </span>
+        {label}
         <Badge tone={level.tone} size="sm" title={level.description}>
           {level.label}
         </Badge>
@@ -148,7 +148,6 @@ function Row({
   // Índices comparables
   if (isIndex(indicator)) {
     const index = displayIndex(indicator, value);
-    const toneKey = toneForIndex(index);
 
     let width: number;
     let caption: string;
@@ -170,19 +169,27 @@ function Row({
     return (
       <div>
         <div className="flex items-baseline justify-between gap-3">
-          <span className="flex items-center gap-2 text-sm">
-            <span className={`h-2.5 w-2.5 rounded-full ${dotClass}`} aria-hidden="true" />
-            {zone.name}
-          </span>
+          {label}
           <span className="tabular-nums text-sm">
             <strong className="text-base">{num(value, decimals)}</strong>
           </span>
         </div>
-        <div className="mt-1 h-2 w-full rounded-full bg-neutral-soft">
+        {/* La barra va en el color de la zona, no en verde/rojo: aquí el color
+            responde a «de quién es este dato», y si el valor es bueno o malo lo
+            dice el índice y su posición respecto a la marca del 100. */}
+        <div className="relative mt-1 h-2 w-full rounded-full bg-neutral-soft">
           <div
-            className={`h-2 rounded-full ${TONE_CLASSES[toneKey].bar}`}
+            className={`h-2 rounded-full ${SERIES[series].bg}`}
             style={{ width: `${width}%` }}
           />
+          {mode === 'nacional' && (
+            <span
+              className="absolute inset-y-[-3px] w-0.5 bg-ink/45"
+              style={{ left: '50%' }}
+              title="Media nacional (100)"
+              aria-hidden="true"
+            />
+          )}
         </div>
         <p className="mt-1 text-xs text-ink-soft">{caption}</p>
       </div>
@@ -197,10 +204,7 @@ function Row({
   return (
     <div>
       <div className="flex items-baseline justify-between gap-3">
-        <span className="flex items-center gap-2 text-sm">
-          <span className={`h-2.5 w-2.5 rounded-full ${dotClass}`} aria-hidden="true" />
-          {zone.name}
-        </span>
+        {label}
         <span className="tabular-nums">
           <strong className="text-base">{num(value, decimals)}</strong>
           {p !== undefined && <span className="ml-2 text-xs text-ink-soft">percentil {p}</span>}
