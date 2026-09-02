@@ -1,0 +1,187 @@
+---
+import Base from '~/layouts/Base.astro';
+import { site } from '~/config/site';
+import { INDICATORS } from '~/data/indicators';
+import { ZONES } from '~/data/zones';
+import { AGGREGATION_LABELS, GROUPS } from '~/lib/indicators/types';
+import { BLOCKS } from '~/lib/affinity/score';
+import { INDEX_CAP } from '~/lib/indicators/compute';
+import { num } from '~/lib/format';
+
+function presentation(indicator: (typeof INDICATORS)[number]): string {
+  if (indicator.kind === 'index') {
+    return indicator.inverted
+      ? `% vs media nacional, invertido · ${indicator.directionLabel}`
+      : `% vs media nacional · ${indicator.directionLabel}`;
+  }
+  if (indicator.kind === 'risk') {
+    return `Badge categórico: ${indicator.levels.map((l) => l.label).join(' / ')}`;
+  }
+  return 'Valor absoluto y percentil nacional · sin dirección buena o mala';
+}
+---
+
+<Base
+  title="Metodología"
+  description="Fuente, nivel de agregación y forma de cálculo de cada indicador."
+>
+  <section class="shell py-10 md:py-14">
+    <h1 class="text-3xl font-black tracking-tight md:text-4xl">Metodología</h1>
+    <p class="mt-3 max-w-prose text-ink-soft">
+      Estos son los {INDICATORS.length} indicadores que alimentan {site.name}, con su fuente, el nivel
+      al que existe realmente el dato y cómo se calcula lo que ves en pantalla.
+    </p>
+
+    <p class="mt-5 rounded-lg border border-accent/30 bg-accent-soft p-4 text-sm text-accent-dark">
+      {site.demoNotice}
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold">Reglas de presentación</h2>
+    <ul class="mt-3 max-w-prose list-disc space-y-2 pl-5 text-ink-soft">
+      <li>
+        Cuando hay valor comparable se muestra como <strong>porcentaje respecto a la media nacional
+        ponderada por población</strong>: 100 es la media de España.
+      </li>
+      <li>
+        Cuando el dato original es <em>malo si sube</em> se <strong>invierte y se renombra en
+        positivo</strong> (criminalidad → seguridad; rachas extremas → estabilidad ante viento), de
+        forma que en toda la interfaz más alto siempre es mejor.
+      </li>
+      <li>
+        Cuando el dato es <strong>categórico o binario</strong> no se fuerza un porcentaje: se usa un
+        badge de nivel de riesgo.
+      </li>
+      <li>
+        Cuando el dato es <strong>descriptivo</strong> (densidad, demografía) se muestra el valor
+        absoluto y su percentil, sin colorearlo como bueno o malo.
+      </li>
+      <li>
+        Cuando un dato se muestra sobre un ámbito más pequeño que el suyo, se advierte con una
+        etiqueta: <em>Dato municipal</em>, <em>Estación meteorológica más cercana</em> o
+        <em>Nivel de parcela</em>.
+      </li>
+      <li>
+        Cuando la fuente <strong>no publica</strong> un dato para una zona, se dice explícitamente y
+        se explica por qué, en lugar de estimarlo.
+      </li>
+      <li>
+        El índice se <strong>limita a {INDEX_CAP}</strong> al mostrarlo. En los indicadores de
+        distancia invertidos, el cociente se dispara (un hospital a 600 m frente a una media
+        nacional de 6,8 km daría 1.133) y esa cifra no significa nada útil para quien busca casa. El
+        valor absoluto nunca se toca y el cálculo completo se puede ver en cada tarjeta.
+      </li>
+    </ul>
+
+    <h2 class="mt-10 text-2xl font-bold">Los {INDICATORS.length} indicadores</h2>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full min-w-[52rem] border-collapse text-sm">
+        <thead>
+          <tr class="border-b-2 border-ink/15 text-left">
+            <th class="p-2 font-semibold">Indicador</th>
+            <th class="p-2 font-semibold">Bloque</th>
+            <th class="p-2 font-semibold">Fuente</th>
+            <th class="p-2 font-semibold">Nivel real</th>
+            <th class="p-2 font-semibold">Presentación</th>
+            <th class="p-2 font-semibold">Media nacional</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            INDICATORS.map((indicator) => (
+              <tr class="border-b border-line align-top">
+                <td class="p-2">
+                  <strong>{indicator.label}</strong>
+                  {indicator.kind === 'index' && indicator.originalLabel && (
+                    <span class="block text-xs text-ink-soft">
+                      invertido de: {indicator.originalLabel}
+                    </span>
+                  )}
+                  <span class="block text-xs text-ink-soft">{indicator.unit}</span>
+                </td>
+                <td class="p-2 text-ink-soft">{GROUPS[indicator.group].label}</td>
+                <td class="p-2">
+                  <a
+                    href={indicator.source.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-brand underline"
+                  >
+                    {indicator.source.organism}
+                  </a>
+                  <span class="block text-xs text-ink-soft">
+                    {indicator.source.dataset} ({indicator.source.period})
+                  </span>
+                </td>
+                <td class="p-2 text-ink-soft">
+                  {AGGREGATION_LABELS[indicator.aggregation]}
+                  {indicator.levelNote && <span class="block text-xs">⚠ Se avisa en la ficha</span>}
+                </td>
+                <td class="p-2 text-ink-soft">{presentation(indicator)}</td>
+                <td class="p-2 tabular-nums text-ink-soft">
+                  {indicator.kind === 'risk'
+                    ? '—'
+                    : num(indicator.nationalAverage, indicator.decimals ?? 1)}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="mt-10 text-2xl font-bold">Cómo se calcula la afinidad</h2>
+    <p class="mt-2 max-w-prose text-ink-soft">
+      El porcentaje de afinidad del formulario reparte 100 puntos entre tres bloques y resta puntos
+      por los riesgos declarados. Es un modelo sencillo y explicable: en cada resultado se enseña
+      qué factores suman y cuáles restan.
+    </p>
+    <div class="mt-4 grid gap-4 md:grid-cols-3">
+      <div class="card p-4">
+        <p class="text-3xl font-black text-brand">{BLOCKS.priorities}</p>
+        <p class="font-semibold">Indicadores comparables</p>
+        <p class="mt-1 text-sm text-ink-soft">
+          Ponderados por el orden de tus prioridades (1.ª ×1, 2.ª ×0,75, 3.ª ×0,5, 4.ª ×0,3) y
+          ajustados a tu situación vital.
+        </p>
+      </div>
+      <div class="card p-4">
+        <p class="text-3xl font-black text-brand">{BLOCKS.income}</p>
+        <p class="font-semibold">Encaje de renta</p>
+        <p class="mt-1 text-sm text-ink-soft">
+          Compara tu renta por persona equivalente con la renta media de la zona. Premia el encaje,
+          no el precio.
+        </p>
+      </div>
+      <div class="card p-4">
+        <p class="text-3xl font-black text-brand">{BLOCKS.setting}</p>
+        <p class="font-semibold">Encaje de entorno</p>
+        <p class="mt-1 text-sm text-ink-soft">
+          Cercanía entre la densidad de la zona y la densidad típica del entorno que buscas, urbano
+          o rural.
+        </p>
+      </div>
+    </div>
+
+    <h2 class="mt-10 text-2xl font-bold">Cobertura de la demo</h2>
+    <p class="mt-2 max-w-prose text-ink-soft">
+      {ZONES.length} zonas: {ZONES.filter((z) => z.level === 'seccion-censal').length} secciones
+      censales de Zaragoza y {ZONES.filter((z) => z.level === 'municipal').length} municipios de
+      Aragón. La arquitectura está preparada para añadir zonas e indicadores nuevos sin tocar la
+      interfaz.
+    </p>
+    <ul class="mt-3 flex flex-wrap gap-2">
+      {
+        ZONES.map((zone) => (
+          <li>
+            <a
+              href={`/analizar?zona=${zone.id}`}
+              class="inline-block rounded-full border border-line bg-white px-3 py-1.5 text-sm hover:border-brand hover:text-brand"
+            >
+              {zone.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>

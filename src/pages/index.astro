@@ -1,0 +1,141 @@
+---
+import Base from '~/layouts/Base.astro';
+import { site } from '~/config/site';
+import { INDICATORS, indicatorsByGroup } from '~/data/indicators';
+import { GROUPS, type GroupId } from '~/lib/indicators/types';
+import { ZONES } from '~/data/zones';
+
+const groupIds = Object.keys(GROUPS) as GroupId[];
+const municipalities = [...new Set(ZONES.map((z) => z.municipality))];
+---
+
+<Base>
+  <section class="border-b border-line bg-white">
+    <div class="shell grid gap-10 py-14 md:grid-cols-2 md:items-center md:py-20">
+      <div>
+        <p class="inline-flex rounded-full bg-brand-soft px-3 py-1 text-sm font-semibold text-brand">
+          {INDICATORS.length} indicadores de fuentes públicas
+        </p>
+        <h1 class="mt-4 text-4xl font-black leading-tight tracking-tight md:text-5xl">
+          Antes de comprar casa,<br />conoce la zona de verdad.
+        </h1>
+        <p class="mt-4 max-w-prose text-lg text-ink-soft">
+          Seguridad, renta, hospitales, colegios, zonas verdes y riesgos naturales de cada zona.
+          Los datos que no aparecen en los portales inmobiliarios, con su fuente y su forma de
+          cálculo siempre a la vista.
+        </p>
+        <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+          <a
+            href="/perfil"
+            class="rounded-lg bg-brand px-5 py-3 text-center font-semibold text-white hover:bg-brand-dark"
+          >
+            Encuentra tu zona ideal
+          </a>
+          <a
+            href="/analizar"
+            class="rounded-lg border border-line bg-white px-5 py-3 text-center font-semibold hover:bg-surface"
+          >
+            Analizar una dirección
+          </a>
+        </div>
+        <p class="mt-4 text-sm text-ink-soft">
+          Cobertura de la demo: {ZONES.length} zonas de {municipalities.length} municipios de Aragón.
+        </p>
+      </div>
+
+      <div class="card p-6">
+        <p class="text-sm font-semibold text-ink-soft">Cómo leemos los datos</p>
+        <ul class="mt-4 space-y-4 text-sm">
+          <li class="flex gap-3">
+            <span class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-good-soft font-bold text-good"
+              >1</span
+            >
+            <span>
+              <strong>100 = media de España.</strong> Cada indicador comparable se expresa como
+              porcentaje respecto a la media nacional ponderada por población.
+            </span>
+          </li>
+          <li class="flex gap-3">
+            <span class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-good-soft font-bold text-good"
+              >2</span
+            >
+            <span>
+              <strong>Más alto siempre es mejor.</strong> Los datos negativos se invierten y se
+              renombran en positivo: la criminalidad se muestra como seguridad.
+            </span>
+          </li>
+          <li class="flex gap-3">
+            <span class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-good-soft font-bold text-good"
+              >3</span
+            >
+            <span>
+              <strong>Sin porcentajes forzados.</strong> Lo que es categórico (inundación, sismo,
+              incendios) se muestra como nivel de riesgo, no como cifra.
+            </span>
+          </li>
+          <li class="flex gap-3">
+            <span class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-good-soft font-bold text-good"
+              >4</span
+            >
+            <span>
+              <strong>Se dice de dónde viene cada dato.</strong> Valor absoluto, fuente, nivel de
+              agregación y fórmula, en cada tarjeta.
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell py-14">
+    <h2 class="text-2xl font-bold">Qué puedes consultar de cada zona</h2>
+    <p class="mt-2 max-w-prose text-ink-soft">
+      Los {INDICATORS.length} indicadores se agrupan en cuatro bloques. Los del bloque de contexto son
+      descriptivos: no son buenos ni malos, dependen de lo que busques.
+    </p>
+
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        groupIds.map((groupId) => (
+          <div class="card p-5">
+            <h3 class="font-bold">{GROUPS[groupId].label}</h3>
+            <p class="mt-1 text-sm text-ink-soft">{GROUPS[groupId].description}</p>
+            <ul class="mt-3 space-y-1 text-sm">
+              {indicatorsByGroup(groupId).map((indicator) => (
+                <li class="flex items-start gap-2">
+                  <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" aria-hidden="true" />
+                  {indicator.label}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="shell pb-16">
+    <div class="grid gap-4 md:grid-cols-2">
+      <a href="/perfil" class="card block p-6 transition-shadow hover:shadow-md">
+        <h3 class="text-xl font-bold">1 · Encuentra tu zona</h3>
+        <p class="mt-2 text-ink-soft">
+          Cuéntanos tu renta, con quién vives, si prefieres ciudad o campo y qué te importa más.
+          Ordenamos las {ZONES.length} zonas por afinidad con tu perfil y te explicamos por qué.
+        </p>
+        <p class="mt-4 font-semibold text-brand">Rellenar el formulario →</p>
+      </a>
+      <a href="/analizar" class="card block p-6 transition-shadow hover:shadow-md">
+        <h3 class="text-xl font-bold">2 · Analiza y compara</h3>
+        <p class="mt-2 text-ink-soft">
+          Escribe una dirección, mira todos sus indicadores y ponla frente a otra zona. Puedes
+          comparar las dos entre sí o cada una contra la media nacional.
+        </p>
+        <p class="mt-4 font-semibold text-brand">Abrir el analizador →</p>
+      </a>
+    </div>
+
+    <p class="mt-8 rounded-lg border border-accent/30 bg-accent-soft p-4 text-sm text-accent-dark">
+      {site.demoNotice}
+    </p>
+  </section>
+</Base>
