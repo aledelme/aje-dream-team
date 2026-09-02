@@ -24,12 +24,15 @@ Para Netlify: `npm run build` y arrastrar la carpeta `dist/` al panel de desplie
 ```
 src/
   config/site.ts            Nombre del producto, claim y navegación. Punto único de branding.
+  config/legal.ts           Responsable, contacto, versión de la política y umbral de agregación.
+  config/team.ts            Las personas del equipo (nombre, rol, LinkedIn).
   styles/global.css         Tokens de marca (@theme) y estilos base.
   lib/
     indicators/types.ts     Contratos: IndicatorDef, ZoneValue, Zone.
     indicators/compute.ts   Índices, inversión, percentiles, tope y avisos de nivel.
     affinity/profile.ts     Tipos y opciones del formulario.
     affinity/score.ts       Algoritmo de afinidad y su desglose explicable.
+    analytics/consent.ts    Consentimiento y payload agregado que se enviaría (tramos, sin IP).
     search/zone-search.ts   Autocompletado por nombre, municipio, calle o código postal.
     format.ts               Formato numérico en español.
   data/
@@ -41,7 +44,7 @@ src/
     profile/                Formulario en 4 pasos y ranking de resultados.
     analyzer/               Buscador, cabecera de zona y toggle de comparación.
     map/ZoneMap.tsx         Mapa Leaflet (carga dinámica, apto para render en servidor).
-  pages/                    index, perfil, analizar, metodologia.
+  pages/                    index, perfil, analizar, metodologia, privacidad, equipo.
 ```
 
 La interfaz se genera a partir de los registros de `src/data/`: no hay listas de indicadores
@@ -82,3 +85,22 @@ Ficha, comparador, ranking de afinidad, pie de página y página de metodología
   lectura. El valor absoluto nunca se altera.
 - Cuando un dato se muestra sobre un ámbito más fino que el suyo se avisa con una etiqueta
   (*Dato municipal*, *Estación meteorológica más cercana*, *Nivel de parcela*).
+
+## Consentimiento y datos de usuario
+
+El formulario de `/perfil` pide dos consentimientos **separados** antes de enviar:
+
+1. **Obligatorio**: aceptar los términos de uso y la política de privacidad. Bloquea el envío.
+2. **Opcional**: ceder las respuestas para estadísticas agregadas comercializables. La herramienta
+   funciona igual sin marcarlo. Va aparte porque el RGPD exige que el consentimiento sea libre y
+   específico: condicionar el uso del servicio a aceptar la comercialización lo invalidaría.
+
+Si se marca el opcional, tras los resultados aparece un desplegable con el registro exacto que se
+enviaría — tramo de renta en lugar de la cifra exacta, y ningún identificador personal.
+
+`src/config/legal.ts` centraliza responsable, contacto, versión de la política, umbral mínimo de
+agregación y plazo de conservación; `/privacidad` y los textos del formulario leen de ahí.
+
+> **Pendiente antes de publicar con recogida real**: rellenar los marcadores del responsable (razón
+> social, NIF, domicilio, correo de privacidad), implementar el backend que reciba el payload y
+> pasar la política por revisión jurídica. El texto actual no es asesoramiento legal.

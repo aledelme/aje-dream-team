@@ -1,11 +1,15 @@
 import { BLOCKS, type ZoneAffinity } from '~/lib/affinity/score';
 import { PRIORITY_LABELS, type Profile } from '~/lib/affinity/profile';
+import { buildAggregatePayload } from '~/lib/analytics/consent';
+import { legal } from '~/config/legal';
 import { ZONE_TYPE_LABELS } from '~/lib/indicators/types';
 import { num } from '~/lib/format';
 
 interface Props {
   results: ZoneAffinity[];
   profile: Profile;
+  /** Si la persona ha consentido el análisis agregado con fines comerciales. */
+  analyticsConsent: boolean;
   onEdit: () => void;
 }
 
@@ -17,7 +21,7 @@ function scoreTone(score: number): string {
 }
 
 /** Ranking de zonas por afinidad, con el desglose de por qué encaja cada una. */
-export default function ResultsList({ results, profile, onEdit }: Props) {
+export default function ResultsList({ results, profile, analyticsConsent, onEdit }: Props) {
   if (results.length === 0) return null;
 
   const priorities = profile.priorities.length
@@ -135,6 +139,8 @@ export default function ResultsList({ results, profile, onEdit }: Props) {
         ))}
       </ol>
 
+      {analyticsConsent && <AggregatePreview profile={profile} />}
+
       <details className="card mt-6 p-4 text-sm">
         <summary className="cursor-pointer font-semibold text-brand">
           Cómo se calcula el porcentaje de afinidad
@@ -173,5 +179,49 @@ export default function ResultsList({ results, profile, onEdit }: Props) {
         </div>
       </details>
     </section>
+  );
+}
+
+/**
+ * Muestra literalmente el registro que se enviaría con el consentimiento de
+ * análisis agregado. Describir el dato con palabras es fácil; enseñarlo tal
+ * cual es lo que hace verificable la promesa de que no se envía nada personal.
+ */
+function AggregatePreview({ profile }: { profile: Profile }) {
+  const fields = buildAggregatePayload(profile);
+
+  return (
+    <details className="card mt-6 p-4 text-sm">
+      <summary className="cursor-pointer font-semibold text-brand">
+        Qué se enviaría con tu consentimiento
+      </summary>
+
+      <p className="mt-3 text-ink-soft">
+        Has aceptado que tus respuestas se usen de forma agregada. Esto es exactamente el registro
+        que se enviaría cuando el servicio esté operativo; en esta demo no se envía nada.
+      </p>
+
+      <dl className="mt-3 divide-y divide-line">
+        {fields.map((field) => (
+          <div key={field.label} className="grid gap-1 py-2 sm:grid-cols-[12rem_1fr] sm:gap-4">
+            <dt className="font-semibold">{field.label}</dt>
+            <dd>
+              {field.value}
+              {field.note && <span className="mt-0.5 block text-xs text-ink-soft">{field.note}</span>}
+            </dd>
+          </div>
+        ))}
+      </dl>
+
+      <p className="mt-3 text-ink-soft">
+        Ninguna estadística se publicaría hasta reunir al menos {legal.aggregationThreshold}{' '}
+        respuestas de la misma zona, para que un dato agregado no permita deducir la respuesta de una
+        persona concreta. Puedes retirar este consentimiento en cualquier momento desde la{' '}
+        <a href="/privacidad" className="text-brand underline">
+          política de privacidad
+        </a>
+        .
+      </p>
+    </details>
   );
 }

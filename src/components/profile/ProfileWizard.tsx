@@ -11,7 +11,9 @@ import {
   type Setting,
 } from '~/lib/affinity/profile';
 import { rankZones } from '~/lib/affinity/score';
+import { EMPTY_CONSENT, buildConsent, saveConsent } from '~/lib/analytics/consent';
 import { num } from '~/lib/format';
+import ConsentGate from './ConsentGate';
 import ResultsList from './ResultsList';
 
 interface Props {
@@ -29,6 +31,7 @@ export default function ProfileWizard({ zones }: Props) {
   const [step, setStep] = useState(0);
   const [profile, setProfile] = useState<Profile>(DEFAULT_PROFILE);
   const [submitted, setSubmitted] = useState(false);
+  const [consent, setConsent] = useState(EMPTY_CONSENT);
 
   const results = useMemo(
     () => (submitted ? rankZones(zones, profile) : []),
@@ -36,6 +39,8 @@ export default function ProfileWizard({ zones }: Props) {
   );
 
   const canContinue = step < 3 || profile.priorities.length > 0;
+  // Sin aceptar los términos no se envía: es el único check que bloquea.
+  const canSubmit = canContinue && consent.terms;
 
   function togglePriority(id: PriorityCategory) {
     setProfile((p) => ({
@@ -47,7 +52,9 @@ export default function ProfileWizard({ zones }: Props) {
   }
 
   function submit() {
+    if (!canSubmit) return;
     saveProfile(profile);
+    saveConsent(buildConsent(consent.terms, consent.analytics));
     setSubmitted(true);
     requestAnimationFrame(() => {
       document.getElementById('resultados')?.scrollIntoView({ behavior: 'smooth' });
@@ -203,6 +210,10 @@ export default function ProfileWizard({ zones }: Props) {
           </fieldset>
         )}
 
+        {step === STEPS.length - 1 && (
+          <ConsentGate terms={consent.terms} analytics={consent.analytics} onChange={setConsent} />
+        )}
+
         {/* Navegación */}
         <div className="mt-7 flex items-center justify-between gap-3">
           <button
@@ -226,7 +237,8 @@ export default function ProfileWizard({ zones }: Props) {
             <button
               type="button"
               onClick={submit}
-              disabled={!canContinue}
+              disabled={!canSubmit}
+              title={!consent.terms ? 'Acepta los términos y la política para continuar' : undefined}
               className="rounded-lg bg-accent px-5 py-2.5 font-semibold text-white hover:bg-accent-dark disabled:opacity-40"
             >
               Ver zonas afines
@@ -236,7 +248,14 @@ export default function ProfileWizard({ zones }: Props) {
       </div>
 
       <div id="resultados" className="scroll-mt-24">
-        {submitted && <ResultsList results={results} profile={profile} onEdit={() => setStep(0)} />}
+        {submitted && (
+          <ResultsList
+            results={results}
+            profile={profile}
+            analyticsConsent={consent.analytics}
+            onEdit={() => setStep(0)}
+          />
+        )}
       </div>
     </>
   );

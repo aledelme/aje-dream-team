@@ -33,4 +33,19 @@ const organisms = [...new Set(INDICATORS.map((i) => i.source.organism))];
       </p>
     </div>
   </div>
+
+  <div class="border-t border-line">
+    <div class="shell flex flex-wrap items-center justify-between gap-3 py-4 text-sm">
+      <p class="text-ink-soft">© {new Date().getFullYear()} {site.name}. {site.poweredBy}.</p>
+      <nav aria-label="Enlaces legales" class="flex flex-wrap gap-4">
+        {
+          site.legalNav.map((item) => (
+            <a href={item.href} class="text-brand underline">
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+  </div>
 </footer>

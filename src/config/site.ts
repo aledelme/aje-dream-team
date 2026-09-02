@@ -18,5 +18,11 @@ export const site = {
     { href: '/perfil', label: 'Encuentra tu zona' },
     { href: '/analizar', label: 'Analizar y comparar' },
     { href: '/metodologia', label: 'Metodología' },
+    { href: '/equipo', label: 'El equipo' },
+  ],
+  /** Enlaces legales y secundarios, sólo en el pie. */
+  legalNav: [
+    { href: '/privacidad', label: 'Privacidad y términos' },
+    { href: '/equipo', label: 'El equipo' },
   ],
 } as const;

@@ -1,0 +1,87 @@
+---
+import { Image } from 'astro:assets';
+import Base from '~/layouts/Base.astro';
+import { site } from '~/config/site';
+import { TEAM } from '~/config/team';
+import equipoFoto from '~/assets/equipo.jpg';
+
+// El orden de TEAM es el mismo en el que aparecen de izquierda a derecha en la foto.
+const ordenFoto = TEAM.map((member) => `${member.name} (${member.role})`).join(', ');
+---
+
+<Base
+  title="El equipo"
+  description="Las cuatro personas que están detrás de Zonia, con su papel en el proyecto."
+>
+  <section class="shell py-10 md:py-14">
+    <h1 class="text-3xl font-black tracking-tight md:text-4xl">El equipo</h1>
+    <p class="mt-3 max-w-prose text-ink-soft">
+      Somos cuatro y cada uno defiende una parte del castillo. Esto es {site.name}: un arquitecto,
+      una forjadora, un conquistador y un juglar empeñados en que elegir dónde vivir se parezca algo
+      más a una decisión informada.
+    </p>
+
+    <figure class="mt-8">
+      <Image
+        src={equipoFoto}
+        alt={`El equipo de ${site.name}, caracterizado en clave medieval: ${ordenFoto}`}
+        widths={[640, 960, 1280, 1536]}
+        sizes="(max-width: 1024px) 100vw, 1024px"
+        class="w-full rounded-card border border-line"
+        loading="eager"
+      />
+      <figcaption class="mt-2 text-sm text-ink-soft">
+        De izquierda a derecha: {ordenFoto}.
+      </figcaption>
+    </figure>
+
+    <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        TEAM.map((member) => (
+          <li class="card flex flex-col p-5">
+            <p class="text-sm font-semibold uppercase tracking-wide text-brand">{member.role}</p>
+            <h2 class="mt-1 text-xl font-bold">{member.name}</h2>
+            <p class="mt-2 flex-1 text-sm text-ink-soft">{member.blurb}</p>
+            <a
+              href={member.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Perfil de LinkedIn de ${member.name} (se abre en una pestaña nueva)`}
+              class="mt-4 inline-flex items-center gap-2 font-semibold text-brand hover:underline"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="h-5 w-5 fill-current">
+                <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0Z" />
+              </svg>
+              LinkedIn
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="card mt-10 p-6">
+      <h2 class="text-xl font-bold">Por qué construimos {site.name}</h2>
+      <p class="mt-2 max-w-prose text-ink-soft">
+        Los portales inmobiliarios cuentan metros, habitaciones y precio. No cuentan si el barrio es
+        seguro, si el hospital está cerca, si la parcela es inundable o si el colegio queda a diez
+        minutos andando. Esos datos existen, son públicos y están dispersos en siete organismos
+        distintos. Nuestro trabajo es reunirlos, hacerlos comparables y enseñar siempre de dónde
+        salen.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-3">
+        <a
+          href="/perfil"
+          class="rounded-lg bg-brand px-5 py-2.5 font-semibold text-white hover:bg-brand-dark"
+        >
+          Encuentra tu zona
+        </a>
+        <a
+          href="/metodologia"
+          class="rounded-lg border border-line bg-white px-5 py-2.5 font-semibold hover:bg-surface"
+        >
+          Ver la metodología
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

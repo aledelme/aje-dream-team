@@ -1,0 +1,315 @@
+---
+import Base from '~/layouts/Base.astro';
+import { site } from '~/config/site';
+import { legal } from '~/config/legal';
+import { INCOME_BRACKETS } from '~/lib/analytics/consent';
+---
+
+<Base
+  title="Privacidad y términos"
+  description="Qué datos trataría Zonia, con qué base jurídica, durante cuánto tiempo y cómo ejercer tus derechos."
+>
+  <section class="shell max-w-3xl py-10 md:py-14">
+    <h1 class="text-3xl font-black tracking-tight md:text-4xl">
+      Política de privacidad y términos de uso
+    </h1>
+    <p class="mt-2 text-sm text-ink-soft">
+      Versión {legal.policyVersion} · Última actualización: {legal.lastUpdated}
+    </p>
+
+    <p class="mt-6 rounded-lg border border-accent/30 bg-accent-soft p-4 text-sm text-accent-dark">
+      <strong>Aviso importante.</strong>
+      {legal.demoNotice}
+    </p>
+
+    <p class="mt-4 rounded-lg border border-line bg-white p-4 text-sm text-ink-soft">
+      <strong class="text-ink">Pendiente de completar.</strong> Este documento está redactado con la
+      estructura de una política real, pero los datos identificativos del responsable son marcadores
+      ({legal.placeholders.legalName}, {legal.placeholders.taxId}, {legal.placeholders.address}) y el
+      correo de contacto todavía no existe. Antes de publicarlo con recogida real hay que rellenarlos
+      y someter el texto a revisión jurídica, en especial el apartado de comercialización de datos
+      agregados. Este texto no constituye asesoramiento legal.
+    </p>
+
+    <nav aria-label="Índice" class="card mt-8 p-4">
+      <p class="font-semibold">En esta página</p>
+      <ol class="mt-2 grid gap-1 text-sm sm:grid-cols-2">
+        <li><a href="#responsable" class="text-brand underline">1. Responsable</a></li>
+        <li><a href="#datos" class="text-brand underline">2. Qué datos tratamos</a></li>
+        <li><a href="#ip" class="text-brand underline">3. Cómo tratamos tu IP</a></li>
+        <li><a href="#finalidades" class="text-brand underline">4. Finalidades y bases jurídicas</a></li>
+        <li><a href="#agregacion" class="text-brand underline">5. Agregación y anonimización</a></li>
+        <li><a href="#conservacion" class="text-brand underline">6. Conservación</a></li>
+        <li><a href="#destinatarios" class="text-brand underline">7. Destinatarios</a></li>
+        <li><a href="#derechos" class="text-brand underline">8. Tus derechos</a></li>
+        <li><a href="#terminos" class="text-brand underline">9. Términos de uso</a></li>
+      </ol>
+    </nav>
+
+    <div class="mt-10 space-y-10">
+      <section id="responsable" class="scroll-mt-24">
+        <h2 class="text-2xl font-bold">1. Responsable del tratamiento</h2>
+        <p class="mt-2">
+          El responsable del tratamiento es <strong>{legal.controller}</strong> ({legal.placeholders
+            .legalName}, {legal.placeholders.taxId}), con domicilio en {legal.placeholders.address}.
+        </p>
+        <p class="mt-2">
+          Para cualquier cuestión relativa a tus datos puedes escribir a
+          <code class="rounded bg-surface px-1.5 py-0.5">{legal.contactEmail}</code>.
+        </p>
+        <p class="mt-2 text-sm text-ink-soft">
+          {site.name} se presenta con la imagen de Ibercaja a efectos de esta demostración. Ibercaja
+          no es responsable del tratamiento descrito en este documento.
+        </p>
+      </section>
+
+      <section id="datos" class="scroll-mt-24">
+        <h2 class="text-2xl font-bold">2. Qué datos tratamos</h2>
+        <p class="mt-2">Cuando el servicio esté operativo trataríamos únicamente:</p>
+        <ul class="mt-2 list-disc space-y-2 pl-5">
+          <li>
+            <strong>Tus respuestas al formulario de preferencias</strong>: el tramo de renta anual —
+            no la cifra exacta que escribes—, tu situación (soltero/a, con pareja, familia con hijos
+            o jubilado/a), si prefieres ciudad o área rural y el orden en que colocas tus
+            prioridades.
+          </li>
+          <li>
+            <strong>Una zona geográfica aproximada</strong> (provincia o municipio) inferida de la
+            dirección IP desde la que te conectas.
+          </li>
+          <li>
+            <strong>La fecha del consentimiento y la versión de esta política</strong>, para poder
+            acreditar qué aceptaste y cuándo.
+          </li>
+        </ul>
+        <p class="mt-3">
+          No pedimos ni tratamos tu nombre, tu correo electrónico, tu teléfono, tu dirección postal
+          ni ningún identificador de dispositivo. No usamos cookies de seguimiento ni creamos
+          perfiles publicitarios.
+        </p>
+        <div class="card mt-4 p-4">
+          <p class="font-semibold">Tramos de renta utilizados</p>
+          <ul class="mt-2 flex flex-wrap gap-2 text-sm">
+            {
+              INCOME_BRACKETS.map((bracket) => (
+                <li class="rounded-full bg-surface px-3 py-1 text-ink-soft">{bracket.label}</li>
+              ))
+            }
+          </ul>
+          <p class="mt-2 text-sm text-ink-soft">
+            La cifra exacta que introduces se usa en tu navegador para calcular tu resultado, pero no
+            forma parte de lo que se enviaría: sólo se enviaría el tramo.
+          </p>
+        </div>
+      </section>
+
+      <section id="ip" class="scroll-mt-24">
+        <h2 class="text-2xl font-bold">3. Cómo tratamos tu dirección IP</h2>
+        <p class="mt-2">
+          Tu dirección IP es un dato personal y llega a nuestro servidor de forma inevitable al
+          establecer la conexión: es como funciona internet. Lo relevante es qué hacemos con ella.
+        </p>
+        <ul class="mt-2 list-disc space-y-2 pl-5">
+          <li>
+            Se utiliza <strong>en memoria y en el momento</strong> para deducir una zona geográfica
+            aproximada (provincia o municipio).
+          </li>
+          <li>
+            <strong>No se almacena</strong> en base de datos, no se guarda en registros persistentes
+            junto a tus respuestas y no se conserva una vez inferida la zona.
+          </li>
+          <li>
+            <strong>No se cruza</strong> con ningún otro identificador ni permite reconstruir tu
+            historial de visitas.
+          </li>
+          <li>
+            La precisión de esta inferencia es limitada por definición: identifica una zona
+            aproximada, no un domicilio.
+          </li>
+        </ul>
+      </section>
+
+      <section id="finalidades" class="scroll-mt-24">
+        <h2 class="text-2xl font-bold">4. Finalidades y bases jurídicas</h2>
+        <p class="mt-2">
+          Son dos tratamientos distintos, con bases jurídicas distintas, y puedes aceptar el primero
+          sin aceptar el segundo.
+        </p>
+
+        <div class="mt-4 grid gap-4 md:grid-cols-2">
+          <div class="card p-4">
+            <p class="font-semibold">a) Prestarte el servicio</p>
+            <p class="mt-2 text-sm">
+              Calcular tu ranking de zonas afines y mostrarte los resultados.
+            </p>
+            <p class="mt-2 text-sm text-ink-soft">
+              <strong class="text-ink">Base jurídica:</strong> la ejecución de la relación que inicias
+              al usar la herramienta (art. 6.1.b RGPD). Sin estos datos no hay resultado que
+              calcular.
+            </p>
+          </div>
+          <div class="card p-4">
+            <p class="font-semibold">b) Análisis agregado y su comercialización</p>
+            <p class="mt-2 text-sm">
+              Incorporar tus respuestas, junto a las de otras personas, a estadísticas agregadas
+              sobre preferencias residenciales por zona, y comercializar esos informes agregados con
+              terceros (promotoras, entidades financieras, administraciones, medios).
+            </p>
+            <p class="mt-2 text-sm text-ink-soft">
+              <strong class="text-ink">Base jurídica:</strong> tu <strong>consentimiento explícito</strong>
+              (art. 6.1.a RGPD), que otorgas marcando la casilla opcional del formulario.
+            </p>
+          </div>
+        </div>
+
+        <p class="mt-4 rounded-lg border border-brand/30 bg-brand-soft p-4 text-sm">
+          <strong>El segundo tratamiento es voluntario.</strong> La herramienta funciona exactamente
+          igual si no lo aceptas: no se degrada el resultado, no se limita ninguna función y no se
+          vuelve a preguntar de forma insistente. Si no marcas esa casilla, tus respuestas no entran
+          en ninguna estadística.
+        </p>
+      </section>
+
+      <section id="agregacion" class="scroll-mt-24">
+        <h2 class="text-2xl font-bold">5. Agregación y anonimización</h2>
+        <p class="mt-2">
+          Los informes que comercializaríamos son <strong>estadísticas agregadas</strong>: nunca
+          respuestas individuales. Para que un dato agregado no permita deducir la respuesta de una
+          persona concreta aplicamos estas reglas:
+        </p>
+        <ul class="mt-2 list-disc space-y-2 pl-5">
+          <li>
+            <strong>Umbral mínimo:</strong> no se publica ni se comercializa ninguna estadística de
+            una zona hasta reunir al menos <strong>{legal.aggregationThreshold} respuestas</strong> de
+            esa zona.
+          </li>
+          <li>
+            <strong>Sin variables identificativas:</strong> los informes contienen distribuciones
+            (por tramo de renta, situación, entorno y prioridades) por zona, no registros
+            individuales.
+          </li>
+          <li>
+            <strong>Granularidad limitada:</strong> la zona geográfica más fina que aparece en los
+            informes es el municipio, y en municipios pequeños se agrupa a nivel de comarca o
+            provincia.
+          </li>
+          <li>
+            Una vez agregados, los datos dejan de ser datos personales y por eso pueden conservarse
+            de forma indefinida.
+          </li>
+        </ul>
+      </section>
+
+      <section id="conservacion" class="scroll-mt-24">
+        <h2 class="text-2xl font-bold">6. Plazos de conservación</h2>
+        <ul class="mt-2 list-disc space-y-2 pl-5">
+          <li><strong>Dirección IP:</strong> no se conserva; se descarta tras inferir la zona.</li>
+          <li>
+            <strong>Respuestas individuales:</strong> un máximo de {legal.retentionMonths} meses,
+            transcurridos los cuales se integran en los agregados y se eliminan.
+          </li>
+          <li>
+            <strong>Estadísticas agregadas:</strong> de forma indefinida, al no ser ya datos
+            personales.
+          </li>
+          <li>
+            <strong>Registro del consentimiento:</strong> mientras esté vigente y durante los plazos
+            de prescripción aplicables, para poder acreditarlo.
+          </li>
+        </ul>
+      </section>
+
+      <section id="destinatarios" class="scroll-mt-24">
+        <h2 class="text-2xl font-bold">7. Destinatarios</h2>
+        <ul class="mt-2 list-disc space-y-2 pl-5">
+          <li>
+            <strong>Compradores de los informes agregados</strong>: reciben exclusivamente
+            estadísticas agregadas, nunca respuestas individuales ni datos personales.
+          </li>
+          <li>
+            <strong>Proveedores tecnológicos</strong> necesarios para prestar el servicio (alojamiento
+            web y servicio de geolocalización por IP), como encargados del tratamiento y con contrato
+            que cumple el artículo 28 del RGPD.
+          </li>
+        </ul>
+        <p class="mt-3">
+          No se prevén transferencias internacionales fuera del Espacio Económico Europeo. Si en el
+          futuro fueran necesarias, se informará aquí y se ampararán en las garantías del capítulo V
+          del RGPD.
+        </p>
+      </section>
+
+      <section id="derechos" class="scroll-mt-24">
+        <h2 class="text-2xl font-bold">8. Tus derechos</h2>
+        <p class="mt-2">
+          Puedes ejercer en cualquier momento los derechos de <strong>acceso</strong>,
+          <strong>rectificación</strong>, <strong>supresión</strong>, <strong>oposición</strong>,
+          <strong>limitación del tratamiento</strong> y <strong>portabilidad</strong> escribiendo a
+          <code class="rounded bg-surface px-1.5 py-0.5">{legal.contactEmail}</code>.
+        </p>
+        <p class="mt-3">
+          <strong>Retirar el consentimiento</strong> para el análisis agregado es igual de fácil que
+          darlo: basta con comunicarlo a esa misma dirección. Retirarlo no afecta a la licitud del
+          tratamiento anterior, y tampoco te impide seguir usando la herramienta.
+        </p>
+        <p class="mt-3 text-sm text-ink-soft">
+          Ten en cuenta que, al no recoger identificadores personales, es posible que no podamos
+          localizar tus respuestas concretas dentro del conjunto: en ese caso te lo indicaremos, tal
+          y como permite el artículo 11 del RGPD. Es la contrapartida de no pedirte ningún dato
+          identificativo.
+        </p>
+        <p class="mt-3">
+          Si consideras que el tratamiento no se ajusta a la normativa, puedes reclamar ante la
+          <a
+            href={legal.authority.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-brand underline">{legal.authority.name}</a
+          >.
+        </p>
+      </section>
+
+      <section id="terminos" class="scroll-mt-24">
+        <h2 class="text-2xl font-bold">9. Términos de uso</h2>
+        <ul class="mt-2 list-disc space-y-2 pl-5">
+          <li>
+            <strong>Datos simulados en la demo.</strong> Los valores de zona que se muestran son
+            simulados con fines de demostración. Las fuentes citadas (INE, Ministerio del Interior,
+            Ministerio de Sanidad, Ministerio de Educación, MITECO, IGN y AEMET) son las que
+            alimentarían la versión real.
+          </li>
+          <li>
+            <strong>Carácter informativo.</strong> {site.name} es una herramienta de orientación. No
+            constituye asesoramiento financiero, jurídico, inmobiliario ni de tasación, ni sustituye
+            la comprobación de la información en las fuentes oficiales antes de tomar una decisión de
+            compra.
+          </li>
+          <li>
+            <strong>Datos heredados de otro ámbito.</strong> Algunos indicadores existen sólo a nivel
+            municipal y se muestran sobre ámbitos menores; la interfaz lo advierte en cada caso. No
+            debe interpretarse que el valor corresponde exactamente a una vivienda concreta.
+          </li>
+          <li>
+            <strong>Limitación de responsabilidad.</strong> No se garantiza la ausencia de errores ni
+            la disponibilidad ininterrumpida del servicio, ni se responde de las decisiones tomadas a
+            partir de la información mostrada.
+          </li>
+          <li>
+            <strong>Propiedad intelectual.</strong> Los datos de origen pertenecen a los organismos
+            públicos que los publican y se utilizan conforme a sus condiciones de reutilización. El
+            diseño, los cálculos y la presentación son propios.
+          </li>
+          <li>
+            <strong>Cambios.</strong> Cualquier modificación relevante de esta política se publicará
+            en esta página con una nueva versión y fecha.
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <p class="mt-10 text-sm text-ink-soft">
+      ¿Dudas sobre cómo calculamos lo que ves? Está todo en la
+      <a href="/metodologia" class="text-brand underline">página de metodología</a>.
+    </p>
+  </section>
+</Base>
