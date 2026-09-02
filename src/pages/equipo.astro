@@ -4,9 +4,13 @@ import Base from '~/layouts/Base.astro';
 import { site } from '~/config/site';
 import { TEAM } from '~/config/team';
 import equipoFoto from '~/assets/equipo.jpg';
+import qrZonia from '~/assets/qr-zonia.png';
 
 // El orden de TEAM es el mismo en el que aparecen de izquierda a derecha en la foto.
 const ordenFoto = TEAM.map((member) => `${member.name} (${member.role})`).join(', ');
+
+// Destino verificado del QR: decodifica a esta URL exacta.
+const qrTarget = 'https://zonia.space';
 ---
 
 <Base
@@ -15,11 +19,6 @@ const ordenFoto = TEAM.map((member) => `${member.name} (${member.role})`).join('
 >
   <section class="shell py-10 md:py-14">
     <h1 class="text-4xl font-extrabold md:text-5xl">El equipo</h1>
-    <p class="mt-3 max-w-prose text-ink-soft">
-      Somos cuatro y cada uno defiende una parte del castillo. Esto es {site.name}: un arquitecto,
-      una forjadora, un conquistador y un juglar empeñados en que elegir dónde vivir se parezca algo
-      más a una decisión informada.
-    </p>
 
     <figure class="mt-8">
       <Image
@@ -81,6 +80,31 @@ const ordenFoto = TEAM.map((member) => `${member.name} (${member.role})`).join('
         >
           Ver la metodología
         </a>
+      </div>
+    </div>
+
+    <!--
+      Bloque pensado para proyectarse: el QR es grande y de alto contraste para
+      que se lea desde el fondo de una sala. La imagen se sirve en PNG sin
+      recomprimir a formatos con pérdida, que emborronarían los módulos del
+      código y podrían impedir su lectura.
+    -->
+    <div class="mt-10 flex flex-col items-center gap-6 rounded-card bg-white p-8 text-center sm:flex-row sm:justify-center sm:text-left">
+      <a href={qrTarget} class="shrink-0" aria-label={`Abrir ${site.name} en ${qrTarget}`}>
+        <Image
+          src={qrZonia}
+          alt={`Código QR que abre ${site.name} en ${qrTarget}`}
+          widths={[320, 480, 640]}
+          sizes="(max-width: 640px) 15rem, 18rem"
+          format="png"
+          class="w-60 sm:w-72"
+        />
+      </a>
+      <div class="max-w-xs">
+        <h2 class="text-2xl font-extrabold">Pruébalo tú</h2>
+        <p class="mt-2 text-ink-soft">
+          Apunta con la cámara del móvil y abre {site.name} para analizar y comparar zonas.
+        </p>
       </div>
     </div>
   </section>
