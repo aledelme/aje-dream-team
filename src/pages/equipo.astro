@@ -89,7 +89,9 @@ const qrTarget = 'https://zonia.space';
       recomprimir a formatos con pérdida, que emborronarían los módulos del
       código y podrían impedir su lectura.
     -->
-    <div class="mt-10 flex justify-center rounded-card bg-white p-8">
+    <!-- Sin tarjeta contenedora: la propia imagen ya trae su marco negro
+         redondeado, así que el bloque se ajusta al QR en vez de estirarse. -->
+    <div class="mt-10 flex justify-center">
       <a href={qrTarget} class="shrink-0" aria-label={`Abrir ${site.name} en ${qrTarget}`}>
         <Image
           src={qrZonia}
