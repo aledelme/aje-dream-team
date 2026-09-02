@@ -10,19 +10,19 @@ import { INCOME_BRACKETS } from '~/lib/analytics/consent';
   description="Qué datos trataría Zonia, con qué base jurídica, durante cuánto tiempo y cómo ejercer tus derechos."
 >
   <section class="shell max-w-3xl py-10 md:py-14">
-    <h1 class="text-3xl font-black tracking-tight md:text-4xl">
+    <h1 class="text-4xl font-extrabold md:text-5xl">
       Política de privacidad y términos de uso
     </h1>
     <p class="mt-2 text-sm text-ink-soft">
       Versión {legal.policyVersion} · Última actualización: {legal.lastUpdated}
     </p>
 
-    <p class="mt-6 rounded-lg border border-accent/30 bg-accent-soft p-4 text-sm text-accent-dark">
+    <p class="mt-6 rounded-xl border border-accent/25 bg-accent-soft p-4 text-sm text-accent-dark">
       <strong>Aviso importante.</strong>
       {legal.demoNotice}
     </p>
 
-    <p class="mt-4 rounded-lg border border-line bg-white p-4 text-sm text-ink-soft">
+    <p class="mt-4 rounded-xl border border-line bg-white p-4 text-sm text-ink-soft">
       <strong class="text-ink">Pendiente de completar.</strong> Este documento está redactado con la
       estructura de una política real, pero los datos identificativos del responsable son marcadores
       ({legal.placeholders.legalName}, {legal.placeholders.taxId}, {legal.placeholders.address}) y el
@@ -34,15 +34,15 @@ import { INCOME_BRACKETS } from '~/lib/analytics/consent';
     <nav aria-label="Índice" class="card mt-8 p-4">
       <p class="font-semibold">En esta página</p>
       <ol class="mt-2 grid gap-1 text-sm sm:grid-cols-2">
-        <li><a href="#responsable" class="text-brand underline">1. Responsable</a></li>
-        <li><a href="#datos" class="text-brand underline">2. Qué datos tratamos</a></li>
-        <li><a href="#ip" class="text-brand underline">3. Cómo tratamos tu IP</a></li>
-        <li><a href="#finalidades" class="text-brand underline">4. Finalidades y bases jurídicas</a></li>
-        <li><a href="#agregacion" class="text-brand underline">5. Agregación y anonimización</a></li>
-        <li><a href="#conservacion" class="text-brand underline">6. Conservación</a></li>
-        <li><a href="#destinatarios" class="text-brand underline">7. Destinatarios</a></li>
-        <li><a href="#derechos" class="text-brand underline">8. Tus derechos</a></li>
-        <li><a href="#terminos" class="text-brand underline">9. Términos de uso</a></li>
+        <li><a href="#responsable" class="text-brand-ink underline">1. Responsable</a></li>
+        <li><a href="#datos" class="text-brand-ink underline">2. Qué datos tratamos</a></li>
+        <li><a href="#ip" class="text-brand-ink underline">3. Cómo tratamos tu IP</a></li>
+        <li><a href="#finalidades" class="text-brand-ink underline">4. Finalidades y bases jurídicas</a></li>
+        <li><a href="#agregacion" class="text-brand-ink underline">5. Agregación y anonimización</a></li>
+        <li><a href="#conservacion" class="text-brand-ink underline">6. Conservación</a></li>
+        <li><a href="#destinatarios" class="text-brand-ink underline">7. Destinatarios</a></li>
+        <li><a href="#derechos" class="text-brand-ink underline">8. Tus derechos</a></li>
+        <li><a href="#terminos" class="text-brand-ink underline">9. Términos de uso</a></li>
       </ol>
     </nav>
 
@@ -162,7 +162,7 @@ import { INCOME_BRACKETS } from '~/lib/analytics/consent';
           </div>
         </div>
 
-        <p class="mt-4 rounded-lg border border-brand/30 bg-brand-soft p-4 text-sm">
+        <p class="mt-4 rounded-xl border border-brand/25 bg-brand-soft p-4 text-sm">
           <strong>El segundo tratamiento es voluntario.</strong> La herramienta funciona exactamente
           igual si no lo aceptas: no se degrada el resultado, no se limita ninguna función y no se
           vuelve a preguntar de forma insistente. Si no marcas esa casilla, tus respuestas no entran
@@ -264,7 +264,7 @@ import { INCOME_BRACKETS } from '~/lib/analytics/consent';
             href={legal.authority.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="text-brand underline">{legal.authority.name}</a
+            class="text-brand-ink underline">{legal.authority.name}</a
           >.
         </p>
       </section>
@@ -309,7 +309,7 @@ import { INCOME_BRACKETS } from '~/lib/analytics/consent';
 
     <p class="mt-10 text-sm text-ink-soft">
       ¿Dudas sobre cómo calculamos lo que ves? Está todo en la
-      <a href="/metodologia" class="text-brand underline">página de metodología</a>.
+      <a href="/metodologia" class="text-brand-ink underline">página de metodología</a>.
     </p>
   </section>
 </Base>

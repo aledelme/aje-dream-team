@@ -89,7 +89,7 @@ export default function ZoneExplorer({ zones }: Props) {
                   type="button"
                   onClick={() => setComparing(true)}
                   disabled={!primary}
-                  className="w-full rounded-lg border border-brand px-4 py-3 font-semibold text-brand hover:bg-brand-soft disabled:opacity-40"
+                  className="btn btn-ghost w-full"
                 >
                   + Añadir zona a comparar
                 </button>
@@ -104,7 +104,7 @@ export default function ZoneExplorer({ zones }: Props) {
                 setComparing(false);
                 setSecondary(null);
               }}
-              className="mt-3 text-sm text-brand underline"
+              className="mt-3 text-sm text-brand-ink underline"
             >
               Quitar la comparación
             </button>
@@ -124,7 +124,7 @@ export default function ZoneExplorer({ zones }: Props) {
                   key={zone.id}
                   type="button"
                   onClick={() => setPrimary(zone)}
-                  className="rounded-full border border-line bg-white px-3 py-1.5 text-sm font-medium hover:border-brand hover:text-brand"
+                  className="rounded-full border border-line bg-white px-3 py-1.5 text-sm font-medium hover:border-brand hover:text-brand-ink"
                 >
                   {zone.name}
                 </button>
@@ -171,7 +171,7 @@ export default function ZoneExplorer({ zones }: Props) {
               );
             })}
 
-            <p className="mt-8 rounded-lg border border-accent/30 bg-accent-soft p-4 text-sm text-accent-dark">
+            <p className="mt-8 rounded-xl border border-accent/25 bg-accent-soft p-4 text-sm text-accent-dark">
               {site.demoNotice} Se muestran {INDICATORS.length} indicadores por zona.
             </p>
           </>

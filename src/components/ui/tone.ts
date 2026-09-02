@@ -15,7 +15,7 @@ export const TONE_CLASSES: Record<Tone, { text: string; bg: string; border: stri
     bar: 'bg-neutral',
   },
   brand: {
-    text: 'text-brand',
+    text: 'text-brand-ink',
     bg: 'bg-brand-soft',
     border: 'border-brand/30',
     bar: 'bg-brand',

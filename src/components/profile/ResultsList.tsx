@@ -37,7 +37,7 @@ export default function ResultsList({ results, profile, analyticsConsent, onEdit
             {num(profile.income)} € al año · {profile.household} · {profile.setting} · {priorities}
           </p>
         </div>
-        <button type="button" onClick={onEdit} className="text-sm font-semibold text-brand underline">
+        <button type="button" onClick={onEdit} className="text-sm font-semibold text-brand-ink underline">
           Cambiar respuestas
         </button>
       </div>
@@ -122,13 +122,13 @@ export default function ResultsList({ results, profile, analyticsConsent, onEdit
               </div>
 
               <div className="flex flex-wrap gap-3 border-t border-line p-4 text-sm font-semibold">
-                <a href={`/analizar?zona=${result.zone.id}`} className="text-brand underline">
+                <a href={`/analizar?zona=${result.zone.id}`} className="text-brand-ink underline">
                   Ver todos los datos de {result.zone.name}
                 </a>
                 {results[i + 1] && (
                   <a
                     href={`/analizar?zona=${result.zone.id}&comparar=${results[i + 1]!.zone.id}`}
-                    className="text-brand underline"
+                    className="text-brand-ink underline"
                   >
                     Comparar con {results[i + 1]!.zone.name}
                   </a>
@@ -142,7 +142,7 @@ export default function ResultsList({ results, profile, analyticsConsent, onEdit
       {analyticsConsent && <AggregatePreview profile={profile} />}
 
       <details className="card mt-6 p-4 text-sm">
-        <summary className="cursor-pointer font-semibold text-brand">
+        <summary className="cursor-pointer font-semibold text-brand-ink">
           Cómo se calcula el porcentaje de afinidad
         </summary>
         <div className="mt-3 space-y-2 text-ink-soft">
@@ -192,7 +192,7 @@ function AggregatePreview({ profile }: { profile: Profile }) {
 
   return (
     <details className="card mt-6 p-4 text-sm">
-      <summary className="cursor-pointer font-semibold text-brand">
+      <summary className="cursor-pointer font-semibold text-brand-ink">
         Qué se enviaría con tu consentimiento
       </summary>
 
@@ -217,7 +217,7 @@ function AggregatePreview({ profile }: { profile: Profile }) {
         Ninguna estadística se publicaría hasta reunir al menos {legal.aggregationThreshold}{' '}
         respuestas de la misma zona, para que un dato agregado no permita deducir la respuesta de una
         persona concreta. Puedes retirar este consentimiento en cualquier momento desde la{' '}
-        <a href="/privacidad" className="text-brand underline">
+        <a href="/privacidad" className="text-brand-ink underline">
           política de privacidad
         </a>
         .

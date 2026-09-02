@@ -39,7 +39,7 @@ export default function ConsentGate({ terms, analytics, onChange }: Props) {
               href="/privacidad"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-brand underline"
+              className="text-brand-ink underline"
             >
               leer la política completa
             </a>{' '}

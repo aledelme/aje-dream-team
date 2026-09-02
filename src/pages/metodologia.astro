@@ -26,13 +26,13 @@ function presentation(indicator: (typeof INDICATORS)[number]): string {
   description="Fuente, nivel de agregación y forma de cálculo de cada indicador."
 >
   <section class="shell py-10 md:py-14">
-    <h1 class="text-3xl font-black tracking-tight md:text-4xl">Metodología</h1>
+    <h1 class="text-4xl font-extrabold md:text-5xl">Metodología</h1>
     <p class="mt-3 max-w-prose text-ink-soft">
       Estos son los {INDICATORS.length} indicadores que alimentan {site.name}, con su fuente, el nivel
       al que existe realmente el dato y cómo se calcula lo que ves en pantalla.
     </p>
 
-    <p class="mt-5 rounded-lg border border-accent/30 bg-accent-soft p-4 text-sm text-accent-dark">
+    <p class="mt-5 rounded-xl border border-accent/25 bg-accent-soft p-4 text-sm text-accent-dark">
       {site.demoNotice}
     </p>
 
@@ -104,7 +104,7 @@ function presentation(indicator: (typeof INDICATORS)[number]): string {
                     href={indicator.source.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-brand underline"
+                    class="text-brand-ink underline"
                   >
                     {indicator.source.organism}
                   </a>
@@ -137,7 +137,7 @@ function presentation(indicator: (typeof INDICATORS)[number]): string {
     </p>
     <div class="mt-4 grid gap-4 md:grid-cols-3">
       <div class="card p-4">
-        <p class="text-3xl font-black text-brand">{BLOCKS.priorities}</p>
+        <p class="text-3xl font-black text-brand-ink">{BLOCKS.priorities}</p>
         <p class="font-semibold">Indicadores comparables</p>
         <p class="mt-1 text-sm text-ink-soft">
           Ponderados por el orden de tus prioridades (1.ª ×1, 2.ª ×0,75, 3.ª ×0,5, 4.ª ×0,3) y
@@ -145,7 +145,7 @@ function presentation(indicator: (typeof INDICATORS)[number]): string {
         </p>
       </div>
       <div class="card p-4">
-        <p class="text-3xl font-black text-brand">{BLOCKS.income}</p>
+        <p class="text-3xl font-black text-brand-ink">{BLOCKS.income}</p>
         <p class="font-semibold">Encaje de renta</p>
         <p class="mt-1 text-sm text-ink-soft">
           Compara tu renta por persona equivalente con la renta media de la zona. Premia el encaje,
@@ -153,7 +153,7 @@ function presentation(indicator: (typeof INDICATORS)[number]): string {
         </p>
       </div>
       <div class="card p-4">
-        <p class="text-3xl font-black text-brand">{BLOCKS.setting}</p>
+        <p class="text-3xl font-black text-brand-ink">{BLOCKS.setting}</p>
         <p class="font-semibold">Encaje de entorno</p>
         <p class="mt-1 text-sm text-ink-soft">
           Cercanía entre la densidad de la zona y la densidad típica del entorno que buscas, urbano
@@ -175,7 +175,7 @@ function presentation(indicator: (typeof INDICATORS)[number]): string {
           <li>
             <a
               href={`/analizar?zona=${zone.id}`}
-              class="inline-block rounded-full border border-line bg-white px-3 py-1.5 text-sm hover:border-brand hover:text-brand"
+              class="inline-block rounded-full border border-line bg-white px-3 py-1.5 text-sm hover:border-brand hover:text-brand-ink"
             >
               {zone.name}
             </a>

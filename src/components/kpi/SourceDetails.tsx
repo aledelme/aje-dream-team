@@ -17,7 +17,7 @@ export default function SourceDetails({ indicator, formula, notes = [] }: Props)
 
   return (
     <details className="group mt-3 border-t border-line pt-2 text-sm">
-      <summary className="flex cursor-pointer list-none items-center gap-1.5 font-medium text-brand hover:underline">
+      <summary className="flex cursor-pointer list-none items-center gap-1.5 font-medium text-brand-ink hover:underline">
         <svg viewBox="0 0 16 16" aria-hidden="true" className="h-3.5 w-3.5 fill-current">
           <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm.75 10.5h-1.5V7h1.5v4.5Zm0-6h-1.5V4h1.5v1.5Z" />
         </svg>
@@ -33,7 +33,7 @@ export default function SourceDetails({ indicator, formula, notes = [] }: Props)
               href={indicator.source.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-brand underline"
+              className="text-brand-ink underline"
             >
               Ver origen
             </a>

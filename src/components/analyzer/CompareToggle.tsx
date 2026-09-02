@@ -35,7 +35,7 @@ export default function CompareToggle({ mode, onChange, zones }: Props) {
               type="button"
               aria-selected={active}
               onClick={() => onChange(option.id)}
-              className={`rounded-lg border px-4 py-2.5 text-left transition-colors ${
+              className={`rounded-xl border px-4 py-3 text-left transition-colors ${
                 active ? 'border-brand bg-brand text-white' : 'border-line bg-white hover:bg-surface'
               }`}
             >

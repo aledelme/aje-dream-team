@@ -73,7 +73,7 @@ export default function ProfileWizard({ zones }: Props) {
                 aria-hidden="true"
               />
               <span
-                className={`mt-1.5 block text-xs ${i === step ? 'font-semibold text-brand' : 'text-ink-soft'}`}
+                className={`mt-1.5 block text-xs ${i === step ? 'font-semibold text-brand-ink' : 'text-ink-soft'}`}
               >
                 {i + 1}. {label}
               </span>
@@ -100,7 +100,7 @@ export default function ProfileWizard({ zones }: Props) {
                 onChange={(e) =>
                   setProfile((p) => ({ ...p, income: Number(e.target.value) || 0 }))
                 }
-                className="w-44 rounded-lg border border-line px-3 py-2 text-lg font-semibold tabular-nums"
+                className="field w-44 text-lg font-semibold tabular-nums"
                 aria-label="Renta anual bruta del hogar en euros"
               />
               <span className="text-lg font-semibold">€ / año</span>
@@ -202,7 +202,7 @@ export default function ProfileWizard({ zones }: Props) {
               <button
                 type="button"
                 onClick={() => setProfile((p) => ({ ...p, priorities: [] }))}
-                className="mt-3 text-sm text-brand underline"
+                className="mt-3 text-sm text-brand-ink underline"
               >
                 Empezar el orden de nuevo
               </button>
@@ -220,7 +220,7 @@ export default function ProfileWizard({ zones }: Props) {
             type="button"
             onClick={() => setStep((s) => Math.max(0, s - 1))}
             disabled={step === 0}
-            className="rounded-lg border border-line px-4 py-2.5 font-semibold disabled:opacity-40"
+            className="btn btn-secondary"
           >
             Atrás
           </button>
@@ -229,7 +229,7 @@ export default function ProfileWizard({ zones }: Props) {
             <button
               type="button"
               onClick={() => setStep((s) => s + 1)}
-              className="rounded-lg bg-brand px-5 py-2.5 font-semibold text-white hover:bg-brand-dark"
+              className="btn btn-primary"
             >
               Continuar
             </button>
@@ -239,7 +239,7 @@ export default function ProfileWizard({ zones }: Props) {
               onClick={submit}
               disabled={!canSubmit}
               title={!consent.terms ? 'Acepta los términos y la política para continuar' : undefined}
-              className="rounded-lg bg-accent px-5 py-2.5 font-semibold text-white hover:bg-accent-dark disabled:opacity-40"
+              className="btn btn-accent"
             >
               Ver zonas afines
             </button>

@@ -2,30 +2,35 @@
 import { site } from '~/config/site';
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+// El logotipo de Ibercaja renovado abandona la mayúscula: el lockup va en
+// minúsculas como guiño a esa decisión de marca.
+const wordmark = site.name.toLowerCase();
 ---
 
 <header class="sticky top-0 z-20 border-b border-line bg-white/95 backdrop-blur">
-  <div class="shell flex h-16 items-center justify-between gap-4">
-    <a href="/" class="flex items-center gap-2.5" aria-label={`${site.name}, inicio`}>
-      <span
-        class="grid h-9 w-9 place-items-center rounded-lg bg-brand text-lg font-black text-white"
-        aria-hidden="true">Z</span
-      >
-      <span class="leading-tight">
-        <span class="block text-lg font-bold tracking-tight">{site.name}</span>
-        <span class="block text-[11px] text-ink-soft">{site.poweredBy}</span>
+  <div class="shell flex h-18 items-center justify-between gap-4">
+    <a href="/" class="group flex items-center gap-3" aria-label={`${site.name}, inicio`}>
+      <span class="leading-none">
+        <span class="block text-2xl font-extrabold tracking-tight text-brand-ink">
+          {wordmark}<span class="text-accent">.</span>
+        </span>
+        <span class="mt-0.5 block text-[11px] lowercase tracking-wide text-ink-soft">
+          {site.poweredBy.toLowerCase()}
+        </span>
       </span>
     </a>
 
-    <nav aria-label="Principal" class="hidden gap-1 md:flex">
+    <nav aria-label="Principal" class="hidden gap-1 lg:flex">
       {
         site.nav.map((item) => (
           <a
             href={item.href}
             aria-current={path === item.href ? 'page' : undefined}
             class:list={[
-              'rounded-md px-3 py-2 text-sm font-medium transition-colors',
-              path === item.href ? 'bg-brand-soft text-brand' : 'text-ink-soft hover:bg-surface',
+              'rounded-full px-3.5 py-2 text-sm font-semibold transition-colors',
+              path === item.href
+                ? 'bg-brand-soft text-brand-ink'
+                : 'text-ink-soft hover:bg-surface hover:text-ink',
             ]}
           >
             {item.label}
@@ -34,23 +39,18 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
       }
     </nav>
 
-    <a
-      href="/perfil"
-      class="hidden rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark md:inline-block"
-    >
-      Encuentra tu zona
-    </a>
+    <a href="/perfil" class="btn btn-primary btn-sm hidden lg:inline-flex"> Encuentra tu zona </a>
   </div>
 
   <!-- Navegación móvil: barra deslizable, sin menús ocultos -->
-  <nav aria-label="Principal (móvil)" class="shell flex gap-1 overflow-x-auto pb-2 md:hidden">
+  <nav aria-label="Principal (móvil)" class="shell flex gap-1.5 overflow-x-auto pb-2.5 lg:hidden">
     {
       site.nav.map((item) => (
         <a
           href={item.href}
           aria-current={path === item.href ? 'page' : undefined}
           class:list={[
-            'shrink-0 rounded-full px-3 py-1.5 text-sm font-medium',
+            'shrink-0 rounded-full px-3.5 py-1.5 text-sm font-semibold',
             path === item.href ? 'bg-brand text-white' : 'bg-surface text-ink-soft',
           ]}
         >

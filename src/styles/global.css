@@ -1,3 +1,12 @@
+/*
+ * Tipografía corporativa.
+ *
+ * «Ibercaja Type», la tipografía propia del rebranding de 2025, es propietaria
+ * y no está disponible públicamente. Source Sans 3 es la sustituta: sans
+ * humanista, de formas abiertas y muy legible en cifras, acorde con el discurso
+ * de cercanía de la marca. Va autoalojada para no depender de Google Fonts.
+ */
+@import '@fontsource-variable/source-sans-3';
 @import 'tailwindcss';
 
 /*
@@ -5,22 +14,44 @@
  * vestirse como Ibercaja, sólo se tocan estos valores.
  */
 @theme {
+  /* --- Colores facilitados por el cliente (logotipo Ibercaja) --- */
   --color-brand: #0071e3;
-  --color-brand-dark: #005bb8;
-  --color-brand-soft: #e6f1fd;
   --color-accent: #e30613;
-  --color-accent-dark: #b90510;
-  --color-accent-soft: #fdeaec;
-
   --color-surface: #f5f5f5;
   --color-ink: #212529;
-  --color-ink-soft: #5c636a;
-  --color-line: #dfe3e7;
 
-  /* Semánticos para índices y badges de riesgo */
-  --color-good: #1a7f4b;
+  /*
+   * --- Tonos de apoyo DERIVADOS por nosotros ---
+   * El rebranding de 2025 introduce tonos propios llamados «Río Ibercaja» y
+   * «Tierra Ibercaja» cuyos valores exactos no son públicos. Estos son
+   * derivaciones del azul y el rojo del logotipo: sustituirlos por los
+   * oficiales en cuanto se disponga de ellos.
+   */
+  --color-brand-dark: #005bb8;
+  --color-brand-deep: #002f5f;
+  --color-brand-soft: #e8f2fe;
+  --color-brand-line: #b9d8f8;
+  /*
+   * El azul de marca sobre fondos claros se queda en 4,31:1, por debajo de AA.
+   * Este tono, mínimamente más oscuro, es el que se usa en TEXTO y enlaces;
+   * el azul original se reserva para rellenos, donde el texto va en blanco.
+   */
+  --color-brand-ink: #006bd8;
+
+  --color-accent-dark: #b90510;
+  --color-accent-soft: #fdeaec;
+  /* Crema cálida para bandas de sección: aporta la calidez del nuevo discurso
+     de marca sin ensuciar el fondo #f5f5f5. */
+  --color-sand: #faf5f1;
+
+  --color-ink-soft: #5c636a;
+  --color-line: #e2e5e9;
+
+  /* Semánticos para índices y badges de riesgo.
+     Tonos ajustados para que el texto sobre su propio fondo suave llegue a AA. */
+  --color-good: #197c4a;
   --color-good-soft: #e6f4ec;
-  --color-mid: #b4690e;
+  --color-mid: #a25f0d;
   --color-mid-soft: #fdf1e0;
   --color-bad: #c0261f;
   --color-bad-soft: #fbeae9;
@@ -28,9 +59,14 @@
   --color-neutral-soft: #eef0f2;
 
   --font-sans:
-    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    'Source Sans 3 Variable', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
 
-  --radius-card: 0.875rem;
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 2px rgb(33 37 41 / 0.04), 0 8px 24px -12px rgb(33 37 41 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(33 37 41 / 0.06), 0 16px 32px -16px rgb(33 37 41 / 0.22);
 }
 
 @layer base {
@@ -45,26 +81,134 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Titulares más rotundos y compactos, como en producto bancario. */
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+  }
+
   :focus-visible {
     outline: 3px solid var(--color-brand);
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: 6px;
   }
 }
 
 @layer components {
-  .card {
-    background-color: #fff;
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-card);
-  }
-
   /* Contenedor común de página */
   .shell {
     width: 100%;
     max-width: 76rem;
     margin-inline: auto;
     padding-inline: 1rem;
+  }
+
+  .card {
+    background-color: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Tarjetas que además son enlace. */
+  .card-hover {
+    transition:
+      box-shadow 0.18s ease,
+      transform 0.18s ease,
+      border-color 0.18s ease;
+  }
+  .card-hover:hover {
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-brand-line);
+    transform: translateY(-2px);
+  }
+
+  /* --- Botones en pastilla --- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding-inline: 1.5rem;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+  .btn:disabled,
+  .btn[aria-disabled='true'] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: var(--color-brand);
+    color: #fff;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--color-brand-dark);
+  }
+
+  /* Rojo oscurecido: #e30613 sobre blanco no alcanza AA a 16 px. */
+  .btn-accent {
+    background-color: var(--color-accent-dark);
+    color: #fff;
+  }
+  .btn-accent:hover:not(:disabled) {
+    background-color: #9c040e;
+  }
+
+  .btn-secondary {
+    background-color: #fff;
+    color: var(--color-ink);
+    border: 1px solid var(--color-line);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    border-color: var(--color-brand);
+    color: var(--color-brand-ink);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--color-brand-ink);
+    border: 1px solid var(--color-brand);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background-color: var(--color-brand-soft);
+  }
+
+  .btn-sm {
+    min-height: 2.5rem;
+    padding-inline: 1.125rem;
+    font-size: 0.9375rem;
+  }
+
+  /* --- Campos de formulario --- */
+  .field {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-pill);
+    padding: 0.75rem 1.125rem;
+    transition: border-color 0.15s ease;
+  }
+  .field:hover,
+  .field:focus-within {
+    border-color: var(--color-brand);
+  }
+
+  /* --- Bandas de sección --- */
+  .band-sand {
+    background-color: var(--color-sand);
+  }
+  .band-white {
+    background-color: #fff;
   }
 }
 

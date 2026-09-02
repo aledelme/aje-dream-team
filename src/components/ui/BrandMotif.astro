@@ -1,0 +1,65 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<!--
+  Motivo ilustrativo propio.
+
+  El rebranding de 2025 describe un lenguaje ilustrativo derivado del símbolo y
+  unos tonos llamados «Río Ibercaja» y «Tierra Ibercaja». Ésta es nuestra
+  lectura: curvas de nivel que sugieren territorio y cauce, en el azul de marca,
+  con la chincheta en rojo. Es interpretación, no un activo oficial.
+-->
+<svg
+  viewBox="0 0 400 300"
+  role="img"
+  aria-label="Ilustración de curvas de territorio con una chincheta señalando una zona"
+  class={className}
+>
+  <defs>
+    <linearGradient id="motif-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8f2fe"></stop>
+      <stop offset="100%" stop-color="#ffffff"></stop>
+    </linearGradient>
+    <clipPath id="motif-clip">
+      <rect x="0" y="0" width="400" height="300" rx="24"></rect>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#motif-clip)">
+    <rect x="0" y="0" width="400" height="300" fill="url(#motif-sky)"></rect>
+
+    <!-- Curvas de nivel -->
+    <g fill="none" stroke="#0071e3" stroke-linecap="round">
+      <path d="M-20 250 C 80 210, 150 265, 250 225 S 380 190, 430 215" stroke-width="2" opacity="0.25"
+      ></path>
+      <path d="M-20 215 C 70 175, 160 230, 255 185 S 380 150, 430 175" stroke-width="2" opacity="0.35"
+      ></path>
+      <path d="M-20 180 C 60 140, 170 195, 260 145 S 375 110, 430 135" stroke-width="2.5" opacity="0.5"
+      ></path>
+      <path d="M-20 145 C 55 105, 180 160, 265 105 S 370 70, 430 95" stroke-width="2.5" opacity="0.7"
+      ></path>
+    </g>
+
+    <!-- Cauce -->
+    <path
+      d="M40 300 C 90 230, 130 215, 175 175 S 245 120, 300 70 L 300 -10"
+      fill="none"
+      stroke="#0071e3"
+      stroke-width="14"
+      stroke-linecap="round"
+      opacity="0.14"></path>
+
+    <!-- Chincheta -->
+    <g transform="translate(176 92)">
+      <circle cx="0" cy="0" r="26" fill="#e30613" opacity="0.12"></circle>
+      <path
+        d="M0 -18 a13 13 0 0 1 13 13 c0 9.5 -13 23 -13 23 s-13 -13.5 -13 -23 a13 13 0 0 1 13 -13 z"
+        fill="#e30613"></path>
+      <circle cx="0" cy="-5.5" r="4.6" fill="#ffffff"></circle>
+    </g>
+  </g>
+</svg>

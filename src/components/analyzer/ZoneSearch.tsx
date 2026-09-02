@@ -68,7 +68,7 @@ export default function ZoneSearch({
     return (
       <div>
         <p className="mb-1.5 text-sm font-semibold">{label}</p>
-        <div className="flex items-center justify-between gap-3 rounded-lg border border-line bg-white p-3">
+        <div className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-white p-3.5">
           <span className="flex min-w-0 items-center gap-2">
             <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${dot}`} aria-hidden="true" />
             <span className="min-w-0">
@@ -81,7 +81,7 @@ export default function ZoneSearch({
           <button
             type="button"
             onClick={() => onSelect(null)}
-            className="shrink-0 text-sm font-semibold text-brand underline"
+            className="shrink-0 text-sm font-semibold text-brand-ink underline"
           >
             Cambiar
           </button>
@@ -95,7 +95,7 @@ export default function ZoneSearch({
       <label className="mb-1.5 block text-sm font-semibold" htmlFor={`search-${label}`}>
         {label}
       </label>
-      <div className={`flex items-center gap-2 rounded-lg border border-line bg-white px-3 ${ring}`}>
+      <div className={`field flex items-center gap-2.5 ${ring}`}>
         <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 shrink-0 fill-ink-soft">
           <path d="M8.5 3a5.5 5.5 0 1 0 3.4 9.8l3.6 3.7 1.4-1.4-3.6-3.6A5.5 5.5 0 0 0 8.5 3Zm0 2a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Z" />
         </svg>
@@ -112,7 +112,7 @@ export default function ZoneSearch({
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          className="w-full bg-transparent py-3 outline-none"
+          className="w-full bg-transparent outline-none"
           role="combobox"
           aria-expanded={open}
           aria-controls={`results-${label}`}
@@ -123,7 +123,7 @@ export default function ZoneSearch({
         <ul
           id={`results-${label}`}
           role="listbox"
-          className="absolute z-30 mt-1 max-h-72 w-full overflow-auto rounded-lg border border-line bg-white shadow-lg"
+          className="absolute z-30 mt-1.5 max-h-72 w-full overflow-auto rounded-2xl border border-line bg-white py-1 shadow-lg"
         >
           {results.length === 0 && (
             <li className="p-3 text-sm text-ink-soft">
